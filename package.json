@@ -1,0 +1,33 @@
+{
+  "name": "namaste-react",
+  "version": "1.0.0",
+  "description": "Learning React",
+  "main": "App.js",
+  "targets": {
+    "main": false
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShubhamPDev7/React-Learning.git"
+  },
+  "keywords": [],
+  "author": "Shubham Pawar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ShubhamPDev7/React-Learning/issues"
+  },
+  "homepage": "https://github.com/ShubhamPDev7/React-Learning#readme",
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "browserslist": [
+    "last 2 Chrome version"
+  ]
+}
