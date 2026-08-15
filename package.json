@@ -7,6 +7,8 @@
     "main": false
   },
   "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
     "test": "jest"
   },
   "repository": {
@@ -28,6 +30,6 @@
     "react-dom": "^19.2.8"
   },
   "browserslist": [
-    "last 2 Chrome version"
+    "last 2 versions"
   ]
 }
