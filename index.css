@@ -6,14 +6,17 @@
   padding: 10px clamp(12px, 4vw, 20px);
   flex-wrap: wrap;
   gap: 10px;
+  user-select: none;
 }
 
 .logo {
   width: clamp(70px, 10vw, 100px);
+  user-select: none;
 }
 
 .nav-items {
   padding: 0;
+  user-select: none;
 }
 
 .nav-items ul {
@@ -23,12 +26,14 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 .nav-items li {
   padding: 10px;
   margin: 5px;
   font-size: clamp(14px, 1.5vw, 18px);
+  user-select: none;
 }
 
 .res-container {
@@ -82,4 +87,16 @@
   .nav-items ul {
     gap: 5px;
   }
+}
+
+.filter-btn {
+  margin: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.reset-btn {
+  margin: 10px;
+  cursor: pointer;
+  user-select: none;
 }
