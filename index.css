@@ -101,8 +101,19 @@
   user-select: none;
 }
 
-.loading {
+.shimmer-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-wrap: wrap;
+}
+
+.shimmer-card {
+  margin: 20px;
+  width: 200px;
+  height: 400px;
+  background-color: #f0f0f0;
+}
+
+.login-btn {
+  padding: 10px 20px;
+  cursor: pointer;
 }
