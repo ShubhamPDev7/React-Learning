@@ -1,9 +1,34 @@
-import resList from "../utils/mockData";
 import RestaurantCard from "./RestaurantCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Body = () => {
-  const [listOfRestaurants, setListOfRestaurants] = useState(resList);
+  const [listOfRestaurants, setListOfRestaurants] = useState([]);
+  const [allRestaurants, setAllRestaurants] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const response = await fetch(
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.5642452&lng=73.7768511&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING",
+    );
+
+    const json = await response.json();
+
+    console.log(json);
+
+    const restaurants =
+      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants;
+    setListOfRestaurants(restaurants);
+    setAllRestaurants(restaurants);
+  };
+
+  if (listOfRestaurants.length === 0) {
+    return <h1 className="loading">Loading...</h1>;
+  }
+
   return (
     <div className="body">
       <div className="filter">
@@ -11,7 +36,7 @@ const Body = () => {
           className="filter-btn"
           onClick={() => {
             const filteredList = listOfRestaurants.filter(
-              (res) => res.data.avgRating >= 4.5,
+              (res) => res.info.avgRating >= 4.5,
             );
             setListOfRestaurants(filteredList);
           }}
@@ -21,7 +46,7 @@ const Body = () => {
         <button
           className="reset-btn"
           onClick={() => {
-            setListOfRestaurants(resList);
+            setListOfRestaurants(allRestaurants);
           }}
         >
           Reset
@@ -29,7 +54,7 @@ const Body = () => {
       </div>
       <div className="res-container">
         {listOfRestaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.data.id} resData={restaurant} />
+          <RestaurantCard key={restaurant.info.id} resData={restaurant} />
         ))}
       </div>
     </div>

@@ -46,12 +46,12 @@
 .res-card {
   width: 100%;
   height: auto;
-  aspect-ratio: 200 / 380;
+  /* aspect-ratio: 200 / 380; */
   padding: 10px;
   box-sizing: border-box;
   background-color: lightgray;
   border-radius: 8px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .res-card:hover {
@@ -99,4 +99,10 @@
   margin: 10px;
   cursor: pointer;
   user-select: none;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
