@@ -1,10 +1,11 @@
 import RestaurantCard from "./RestaurantCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { restaurantListMock } from "../utils/Mockrestaurantlist";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import { withPromotedLabel } from "./RestaurantCard";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
@@ -33,7 +34,6 @@ const Body = () => {
 
       setListOfRestaurants(restaurants);
       setAllRestaurants(restaurants);
-      console.log(restaurants);
     } catch (error) {
       console.error("Error loading restaurant list:", error);
     }
@@ -46,6 +46,8 @@ const Body = () => {
       </h1>
     );
   }
+
+  const { setUserName, loggedInUser } = useContext(UserContext);
 
   return listOfRestaurants.length === 0 ? (
     <Shimmer />
@@ -93,6 +95,18 @@ const Body = () => {
         >
           Reset
         </button>
+        <div>
+          <label className="mr-3">username : </label>
+          <input
+            type="text"
+            placeholder="Enter username"
+            className="border border-b px-2"
+            value={loggedInUser}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+          />
+        </div>
       </div>
 
       {/* Restaurant List Cards */}

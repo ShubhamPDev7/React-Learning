@@ -1,4 +1,4 @@
-const ItemList = ({ items }) => {
+const ItemList = ({ items, dummy }) => {
   return (
     <div>
       {items.map((item) => (
@@ -20,7 +20,7 @@ const ItemList = ({ items }) => {
           </div>
           <div className="w-3/12 p-4 relative flex justify-center items-center">
             <div className="absolute bottom-1">
-              <button className="px-3 py-1 bg-white text-green-600 font-bold text-xs rounded border border-gray-300 shadow">
+              <button className="px-3 py-1 bg-white text-green-600 font-bold text-xs rounded border border-gray-300 shadow active:scale-95">
                 Add +
               </button>
             </div>

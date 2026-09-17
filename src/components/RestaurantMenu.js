@@ -3,10 +3,15 @@ import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 import { Link } from "react-router-dom";
 import RestaurantCategory from "./RestaurantCategory";
+import { useState } from "react";
 
 const RestaurantMenu = () => {
   const { resId } = useParams();
   const resInfo = useRestaurantMenu(resId);
+
+  const [showIndex, setShowIndex] = useState(0);
+  
+  const dummy = "Dummy Data";
 
   if (!resInfo) {
     return <Shimmer />;
@@ -55,9 +60,14 @@ const RestaurantMenu = () => {
             <RestaurantCategory
               key={index}
               data={category?.card?.card}
+              showItems={index === showIndex  && true}
+              setShowIndex={() => 
+                setShowIndex((prevIndex) => (prevIndex === index ? null : index))
+              }
+              dummy={dummy}
             />,
           ),
-        )}
+          )}
       </div>
     </div>
   );

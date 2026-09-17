@@ -1,11 +1,17 @@
 import { LOGO_URL } from "../utils/constants";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 const Header = () => {
   const [btnNameReact, setBtnNameReact] = useState("Login");
   const onlineStatus = useOnlineStatus();
+
+  const data = useContext(UserContext);
+  console.log(data);
+
+  const [user, setUser] = useState("Default User");
 
   return (
     <header className="flex justify-between items-center px-6 py-2 border-b border-gray-200 bg-white shadow-sm">
@@ -16,28 +22,33 @@ const Header = () => {
       <nav>
         <ul className="flex items-center gap-6 text-sm text-gray-700">
           <li className="text-xs">Status: {onlineStatus ? "🟢" : "🔴"}</li>
-          <li className="hover:text-black">
+          <li className="hover:text-black active:scale-95">
             <Link to="/">Home</Link>
           </li>
-          <li className="hover:text-black">
+          <li className="hover:text-black active:scale-95">
             <Link to="/about">About Us</Link>
           </li>
-          <li className="hover:text-black">
+          <li className="hover:text-black active:scale-95">
             <Link to="/contact">Contact</Link>
           </li>
-          <li className="hover:text-black">
+          <li className="hover:text-black active:scale-95">
             <Link to="/grocery">Grocery</Link>
           </li>
-          <li className="hover:text-black cursor-pointer">Cart</li>
+          <li className="hover:text-black cursor-pointer active:scale-95">
+            Cart
+          </li>
           <li>
             <button
-              className="px-3 py-1 bg-gray-100 border border-gray-300 rounded text-xs font-semibold hover:bg-gray-200"
+              className="px-3 py-1 bg-gray-100 border border-gray-300 rounded text-xs font-semibold hover:bg-gray-200 active:scale-95"
               onClick={() => {
                 setBtnNameReact(btnNameReact === "Login" ? "Logout" : "Login");
               }}
             >
               {btnNameReact}
             </button>
+          </li>
+          <li className="px-4 font-bold cursor-pointer active:scale-95">
+            {data.loggedInUser}
           </li>
         </ul>
       </nav>
