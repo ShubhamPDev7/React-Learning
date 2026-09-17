@@ -1,52 +1,64 @@
-import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
-import { json } from "express";
+import useRestaurantMenu from "../utils/useRestaurantMenu";
+import { Link } from "react-router-dom";
+import RestaurantCategory from "./RestaurantCategory";
 
 const RestaurantMenu = () => {
-  const [resInfo, setResInfo] = useState(null);
+  const { resId } = useParams();
+  const resInfo = useRestaurantMenu(resId);
 
-  // const { resId } = useParams();
-
-  useEffect(() => {
-    fetchMenu();
-  }, []);
-
-  const fetchMenu = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=18.6225555&lng=73.75330869999999&restaurantId=94261&catalog_qa=undefined&submitAction=ENTER",
-    );
-
-    const json = await data.json();
-
-    console.log(json.data);
-  };
-
-  if (resInfo === null) {
+  if (!resInfo) {
     return <Shimmer />;
   }
 
-  const { name, cuisines, costForTwoMessage } =
-    resInfo?.data?.cards[2]?.card?.card?.info || {};
+  // Locate the REGULAR cards group
+  const regularCards = resInfo?.data?.cards?.find(
+    (c) => c?.groupedCard?.cardGroupMap?.REGULAR,
+  )?.groupedCard?.cardGroupMap?.REGULAR?.cards;
 
-  const { itemCards } =
-    resInfo?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
-      ?.card || {};
+  // Restaurant details (name, cuisines, costForTwo)
+  const restaurantInfo = regularCards?.find(
+    (c) => c?.card?.card?.info?.id === resId,
+  )?.card?.card?.info;
+
+  // Get the first item cards list directly (e.g. Recommended)
+  const itemCards =
+    regularCards?.find(
+      (c) =>
+        c?.card?.card?.["@type"] ===
+        "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory",
+    )?.card?.card?.itemCards || [];
+
+  const categories = regularCards.filter(
+    (c) =>
+      c?.card?.card?.["@type"] ===
+      "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory",
+  );
+
+  // console.log(categories);
+
+  const { name, cuisines, costForTwo } = restaurantInfo || {};
 
   return (
-    <div className="menu">
-      <h1>{name}</h1>
-      <p>
-        {cuisines?.join(", ")} - {costForTwoMessage}
-      </p>
-      <h2>Menu</h2>
-      <ul>
-        {itemCards?.map((item) => (
-          <li className="menu-item" key={item.card.info.id}>
-            {item.card.info.name} - ₹ {item.card.info.price / 100}
-          </li>
-        ))}
-      </ul>
+    <div>
+      {/* Restaurant Header */}
+
+      <div className="text-center">
+        <h1 className="font-bold my-6 text-2xl">{name}</h1>
+        <p className="font-semibold text-lg">
+          {cuisines?.join(", ")} • {costForTwo}
+        </p>
+        {/* categories accordions */}
+        {categories.map((category, index) =>
+          (
+            <RestaurantCategory
+              key={index}
+              data={category?.card?.card}
+            />,
+          ),
+        )}
+      </div>
     </div>
   );
 };

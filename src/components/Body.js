@@ -1,81 +1,114 @@
 import RestaurantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
+import { restaurantListMock } from "../utils/Mockrestaurantlist";
+import useOnlineStatus from "../utils/useOnlineStatus";
+import { withPromotedLabel } from "./RestaurantCard";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [searchRestaurants, setSearchRestaurants] = useState([]);
+  const onlineStatus = useOnlineStatus();
+
+  const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    const response = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.5642452&lng=73.7768511&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING",
-    );
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-    const json = await response.json();
+      const json = restaurantListMock;
+      const restaurantCard = json?.data?.data?.cards?.find(
+        (c) => c?.card?.card?.gridElements?.infoWithStyle?.restaurants,
+      );
 
-    // console.log(json);
+      const restaurants =
+        restaurantCard?.card?.card?.gridElements?.infoWithStyle?.restaurants ||
+        [];
 
-    const restaurants =
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants;
-    setListOfRestaurants(restaurants);
-    setAllRestaurants(restaurants);
-    setSearchRestaurants(restaurants);
+      setListOfRestaurants(restaurants);
+      setAllRestaurants(restaurants);
+      console.log(restaurants);
+    } catch (error) {
+      console.error("Error loading restaurant list:", error);
+    }
   };
+
+  if (!onlineStatus) {
+    return (
+      <h1 className="p-6 text-center text-red-500 font-semibold">
+        Looks like you're offline! Please check your internet connection.
+      </h1>
+    );
+  }
 
   return listOfRestaurants.length === 0 ? (
     <Shimmer />
   ) : (
-    <div className="body">
-      <div className="filter">
-        <div className="search">
-          <input
-            type="text"
-            className="search-box"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          <button
-            className="search-button"
-            onClick={() => {
-              const filteredRestaurant = searchRestaurants.filter((res) =>
-                res.info.name.toLowerCase().includes(searchText.toLowerCase()),
-              );
-              setListOfRestaurants(filteredRestaurant);
-            }}
-          >
-            Search
-          </button>
-        </div>
+    <div className="max-w-6xl mx-auto p-4">
+      {/* Search & Filter Bar */}
+      <div className="flex flex-wrap items-center gap-3 mb-6">
+        <input
+          type="text"
+          className="border border-gray-300 rounded px-3 py-1.5 text-sm outline-none focus:border-gray-500"
+          placeholder="Search restaurant..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
         <button
-          className="filter-btn"
+          className="px-3 py-1.5 bg-green-600 text-white text-sm rounded hover:bg-green-700"
           onClick={() => {
-            const filteredList = listOfRestaurants.filter(
+            const filteredRestaurant = allRestaurants.filter((res) =>
+              res.info.name.toLowerCase().includes(searchText.toLowerCase()),
+            );
+            setListOfRestaurants(filteredRestaurant);
+          }}
+        >
+          Search
+        </button>
+
+        <button
+          className="px-3 py-1.5 bg-gray-100 border border-gray-300 text-sm rounded hover:bg-gray-200"
+          onClick={() => {
+            const filteredList = allRestaurants.filter(
               (res) => res.info.avgRating >= 4.5,
             );
             setListOfRestaurants(filteredList);
           }}
         >
-          Top Rated Restaurants
+          Top Rated
         </button>
+
         <button
-          className="reset-btn"
+          className="px-3 py-1.5 bg-gray-100 border border-gray-300 text-sm rounded hover:bg-gray-200"
           onClick={() => {
+            setSearchText("");
             setListOfRestaurants(allRestaurants);
           }}
         >
           Reset
         </button>
       </div>
-      <div className="res-container">
+
+      {/* Restaurant List Cards */}
+      <div className="flex flex-wrap">
         {listOfRestaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+          <Link
+            key={restaurant.info.id}
+            to={"/restaurants/" + restaurant.info.id}
+            className="no-underline text-inherit"
+          >
+            {restaurant.info.promoted ? (
+              <RestaurantCardPromoted resData={restaurant} />
+            ) : (
+              <RestaurantCard resData={restaurant} />
+            )}
+          </Link>
         ))}
       </div>
     </div>
