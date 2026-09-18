@@ -10,7 +10,7 @@ const useRestaurantMenu = (resId) => {
 
   const fetchData = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300)); 
 
       const json = restaurantMenuMock[resId];
       setResInfo(json);
