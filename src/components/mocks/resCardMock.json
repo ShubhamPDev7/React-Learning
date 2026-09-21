@@ -1,0 +1,16 @@
+{
+  "info": {
+    "id": "100001",
+    "name": "Pizza Paradise",
+    "cloudinaryImageId": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&h=400&q=80",
+    "cuisines": ["Italian", "Pizza"],
+    "avgRating": 4.3,
+    "costForTwo": "₹480 for two",
+    "sla": {
+      "deliveryTime": 43
+    },
+    "areaName": "Jayanagar",
+    "locality": "ITPL Main Road",
+    "promoted": false
+  }
+}

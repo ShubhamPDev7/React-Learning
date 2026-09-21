@@ -57,6 +57,7 @@ const Body = () => {
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <input
           type="text"
+          data-testid="searchInput"
           className="border border-gray-300 rounded px-3 py-1.5 text-sm outline-none focus:border-gray-500"
           placeholder="Search restaurant..."
           value={searchText}

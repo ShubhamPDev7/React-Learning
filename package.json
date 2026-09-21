@@ -9,7 +9,8 @@
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html",
-    "test": "jest"
+    "test": "jest",
+    "watch-test": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -23,11 +24,21 @@
   },
   "homepage": "https://github.com/ShubhamPDev7/React-Learning#readme",
   "devDependencies": {
+    "@babel/core": "^8.0.5",
+    "@babel/preset-env": "^8.0.5",
+    "@babel/preset-react": "^8.0.1",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/jest": "^30.0.0",
     "assert": "^2.1.0",
+    "babel-jest": "^30.5.1",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
     "events": "^3.3.0",
+    "jest": "^30.5.1",
+    "jest-environment-jsdom": "^30.5.1",
     "parcel": "^2.16.4",
     "path-browserify": "^1.0.1",
     "postcss": "^8.5.28",

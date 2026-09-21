@@ -10,9 +10,12 @@ const useRestaurantMenu = (resId) => {
 
   const fetchData = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300)); 
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       const json = restaurantMenuMock[resId];
+      console.log("resId:", resId);
+      console.log("Available keys:", Object.keys(restaurantMenuMock));
+      console.log("Selected data:", json);
       setResInfo(json);
       console.log(json);
     } catch (error) {

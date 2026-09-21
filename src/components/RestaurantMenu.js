@@ -9,8 +9,11 @@ const RestaurantMenu = () => {
   const { resId } = useParams();
   const resInfo = useRestaurantMenu(resId);
 
-  const [showIndex, setShowIndex] = useState(0 );
-  
+  console.log("resId in component:", resId);
+  console.log("resInfo:", resInfo);
+
+  const [showIndex, setShowIndex] = useState(0);
+
   const dummy = "Dummy Data";
 
   if (!resInfo) {
@@ -21,6 +24,8 @@ const RestaurantMenu = () => {
   const regularCards = resInfo?.data?.cards?.find(
     (c) => c?.groupedCard?.cardGroupMap?.REGULAR,
   )?.groupedCard?.cardGroupMap?.REGULAR?.cards;
+
+  console.log("regularCards:", regularCards);
 
   // Restaurant details (name, cuisines, costForTwo)
   const restaurantInfo = regularCards?.find(
@@ -55,19 +60,17 @@ const RestaurantMenu = () => {
           {cuisines?.join(", ")} • {costForTwo}
         </p>
         {/* categories accordions */}
-        {categories.map((category, index) =>
-          (
-            <RestaurantCategory
-              key={index}
-              data={category?.card?.card}
-              showItems={index === showIndex  && true}
-              setShowIndex={() => 
-                setShowIndex((prevIndex) => (prevIndex === index ? null : index))
-              }
-              dummy={dummy}
-            />,
-          ),
-          )}
+        {categories?.map((category, index) => (
+          <RestaurantCategory
+            key={category?.card?.card?.title || index}
+            data={category?.card?.card}
+            showItems={index === showIndex}
+            setShowIndex={() =>
+              setShowIndex((prevIndex) => (prevIndex === index ? null : index))
+            }
+            dummy={dummy}
+          />
+        ))}
       </div>
     </div>
   );
